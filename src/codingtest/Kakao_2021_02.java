@@ -1,86 +1,74 @@
 package codingtest;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map.Entry;
-import java.util.Stack;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Kakao_2021_02 {
-	public static void main(String[] args) {
-		String[] orders = {"ABCFG", "AC", "CDE", "ACDE", "BCFG", "ACDEH"};
-		int[] course = {2,3,4};
-		String[] answer = solution(orders, course);
-		for(int i =0 ; i<answer.length; i++) {
-		System.out.println(answer[i]);
+	static Set<String> orderSet = new HashSet<String>(); 
+		public static void main(String[] args) {
+			String[] orders = {"ABCFG", "AC", "CDE", "ACDE", "BCFG", "ACDEH"};
+			int[] course = {2,3,4};
+			System.out.println(solution(orders, course));
 		}
-		
-	}
 	public static String[] solution(String[] orders, int[] course) {
-       Stack<String> stack = new Stack<String>();
-        ArrayList<String> array = new ArrayList<String>();
-        for(int i =0; i<orders.length; i++) {
-        	for(int j = 0; j<course.length; j++) {
-        		stack = cal(orders[i], course[j]);
-        		for(int k=0; k<stack.size(); k++) {
-        		array.add(stack.pop());
-        		}
-        	}
+        String[] answer = {};
+        //만약 contains로 푼다면? 콘테인즈로
+        Set<String> orderSet = new HashSet<String>();
+        ArrayList<char[]> orderList = new ArrayList<>();
+        //모든 것을 담는다.
+        
+        for(String order: orders) {
+        	char[] orderArr = order.toCharArray();//{A,B,C,F,G}가 담기고
+        	for(int i = 0; i<course.length; i++) {
+            	boolean[] visited = new boolean[orderArr.length];
+            	orderSet = combination(orderArr, visited, 0, course[i], 0);
+            	
+            }
+        	
         }
-        String[] answer = new String[array.size()];
-        for(int i=0; i<array.size(); i++) {
-        	answer[i] = array.get(i);
-        }
-       
+        
         return answer;
     }
 	
 	
-	public static Stack<String> cal(String orders, int course) {
-		String result = orders;
-		String str ="";
-		char[] ch = orders.toCharArray();
-		HashMap<String, Integer> map = new HashMap<String, Integer>();
-		Stack<String> stack = new Stack<>();
-		if(result.length() >= course) {
-			for(int i =0; i<ch.length; i++) {
-				str += ch[i];
-				
-				for(int j = i+1; j<orders.length(); j++) {
-					if(str.equals("")) {
-						str += ch[i];
-					}
-					str += ch[j];
-					
-					if(str.length() == course) {
-						if(map.get(str) != null) {
-							map.put(str, map.get(str)+1);
-						}else {
-						map.put(str, 1);
-						}
-						str = "";
-					}
-					//ch[0]+ch[1], ch[0]+ch[2] ... ch[0], ch[ch.length-1]
-				}
+	public static Set<String> combination(char[] orderArr,boolean[] visited, int start, int course, int r) {//{A,B,C,F,G}가 담기고 
+		StringBuilder sb = new StringBuilder();
+		sb.append(orderArr[start]);
+		System.out.println(sb.toString());
+		if(r==course) {
+			orderSet.add(sb.toString());
+			System.out.println(orderSet);
+			return orderSet;
+		}
+		if(start == orderArr.length) {
+			return orderSet;
+		}else {
+			for(int i = start; i< orderArr.length; i++) {
+				visited[i] = true;
+				combination(orderArr, visited, start+1, course, r+1);
+				visited[i] = false;
 			}
 		}
 		
-		for(Entry<String, Integer> elem : map.entrySet()) {
-			Integer maxValue = Collections.max(map.values());
-			 if(map.get(elem.getKey()) == maxValue){
-				
-				stack.add(elem.getKey());
-				System.out.println("!: " +stack.peek());
-			}
-		}
 		
-		return stack;
+		
+		
+		return orderSet;
 	}
 }
 
 
-//1. 나올 수 있는 경우의 수를 모두 구하자
-//2. hashmap에 넣고 키값 별로 넣어 두고 키값이 같을 경우 밸루값을 1증가시키자
-//3. 이부분이 문제, 넣어놓은 해쉬맵을 문자열 길이별롱 제일 높은 값을 빼내야 한다. 
 
-//각 orders의 나올수 있는 모든 경우의 수를 arraylist에 담고, 처음부터 비교
+
+
+//조건:
+//알파벳 중복 x
+//오름차순으로 정렬 course배열 2~10
+//오름차순으로 정렬 return
+//많이 주문된 것이 중복이면 모두 배열에 담아 리턴
+
+
+//풀이:
+//우선 모든 조합을 배열에 담아줘야 한다.(재귀)
+//맵으로 넣어줘서 같을 경우 안에 카운트 늘려주기
