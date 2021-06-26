@@ -15,7 +15,7 @@ public class JewelsAndStones {
 		char[] stoneArr = b.toCharArray();
 		HashSet<Character> set = new HashSet<Character>();
 		char[] jewelArr = a.toCharArray();
-		int count = 0;
+		int count = 0; 
 		
 		for(int i = 0; i<b.length(); i++) {
 			set.add(stoneArr[i]);
