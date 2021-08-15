@@ -2,7 +2,7 @@ package toss;
 
 public class Toss1 {
 	public static void main(String[] args) {
-		long orderAmount = 5;
+		long orderAmount = 10;
 		long taxFreeAmount = 4;
 		long serviceFee = 0;
 		System.out.println(solution(orderAmount, taxFreeAmount, serviceFee));
