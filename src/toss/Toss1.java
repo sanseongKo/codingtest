@@ -1,7 +1,13 @@
 package toss;
 
 public class Toss1 {
-	public long solution(long orderAmount, long taxFreeAmount, long serviceFee) {
+	public static void main(String[] args) {
+		long orderAmount = 5;
+		long taxFreeAmount = 4;
+		long serviceFee = 0;
+		System.out.println(solution(orderAmount, taxFreeAmount, serviceFee));
+	}
+	public static long solution(long orderAmount, long taxFreeAmount, long serviceFee) {
         long answer = 0;
         long tax = 0;
         long vat = 0;
